@@ -66,6 +66,10 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
     Puzzle bestPuzzle = p;
     int bestValue = p.GetValue();
     
+    // look at all successors from current puzzle
+    vector<Puzzle> successors;
+    bestPuzzle.GetAllSuccessors(successors);
+    
     // Keep track of the time so we don't exceed it.
     Timer t;
     t.StartTimer();
@@ -74,7 +78,8 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
     {
         // Generate a successor of p by randomly changing the value of a random cell
         // (since we are doing a random walk, we just replace p with its successor)
-        p = p.GetClimbingSuccessor();
+        
+        p = p.GetClimbingSuccessor(successors, bestValue);
         int value = p.GetValue();
         
         // Update the current best solution.
@@ -83,6 +88,7 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
         {
             bestValue = value;    // Calling it a second time simply returns the value that was computed before.
             bestPuzzle = p;
+            bestPuzzle.GetAllSuccessors(successors);
         }
     }
     

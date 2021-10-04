@@ -16,12 +16,12 @@ int Puzzle::GetValue()
 	return value;
 }
 
-bool Puzzle::HasSolution()
+bool Puzzle::HasUniqueSolution()
 {
-	if (!evaluated)
-		Evaluate();
-	
-	return hasSolution;
+    if (!evaluated)
+        Evaluate();
+    
+    return hasUniqueSolution;
 }
 
 Puzzle Puzzle::GetRandomSuccessor()
@@ -44,47 +44,23 @@ Puzzle Puzzle::GetRandomSuccessor()
 	return p;
 }
 
-Puzzle Puzzle::GetClimbingSuccessor()
+Puzzle Puzzle::GetClimbingSuccessor(std::vector<Puzzle> successors, int bestvalue)
 {
     Puzzle p(*this);
     
     if (minVal == maxVal)    // Can't change anything
         return p;
         
-    // Pick a random cell
-    int i = rand()%(pSize-1);    // Don't modify the goal
+    // Pick a random successor puzzle that has unique solution
+    int i = rand()%(successors.size()-1);
+    Puzzle nextpuzzle = successors.at(i);
     
-    // Randomly change its value
-    int newVal = cells[i].val;
-    bool climb = true;
-    int flopped = 0;
-    int value_old = p.GetValue();
-    int increment = 1;
-    
-    while(flopped < 2 && (newVal > minVal && newVal < maxVal)){
-        
-        newVal += increment;
-        
-        // baby steps
-        if(climb && newVal < maxVal)
-            p.SetCellValue(i, newVal);
-        else if(!climb && newVal > minVal)
-            p.SetCellValue(i, newVal);
-        
-        // check for increase
-        int value_new = p.GetValue();
-        
-        if (value_old > value_new){
-            increment *= -1;
-            flopped++;
-            climb = !climb;
-            newVal += increment;
-            p.SetCellValue(i, newVal);
-        }
-        else
-            value_old = value_new;
+    while(nextpuzzle.GetValue() < bestvalue){
+        i = rand()%(successors.size()-1);
+        nextpuzzle = successors.at(i);
     }
-    return p;
+        
+    return nextpuzzle;
 }
 
 void Puzzle::GetAllSuccessors(std::vector<Puzzle> & successors)

@@ -30,8 +30,9 @@ public:
 	
 	int GetValue();
 	bool HasSolution();
+    bool HasUniqueSolution();
     Puzzle GetRandomSuccessor();
-    Puzzle GetClimbingSuccessor();
+    Puzzle GetClimbingSuccessor(std::vector<Puzzle> successors, int bestvalue);
 	void GetAllSuccessors(std::vector<Puzzle> & successors);
 	void Print(bool printStatistics = true);
 
