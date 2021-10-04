@@ -44,6 +44,49 @@ Puzzle Puzzle::GetRandomSuccessor()
 	return p;
 }
 
+Puzzle Puzzle::GetClimbingSuccessor()
+{
+    Puzzle p(*this);
+    
+    if (minVal == maxVal)    // Can't change anything
+        return p;
+        
+    // Pick a random cell
+    int i = rand()%(pSize-1);    // Don't modify the goal
+    
+    // Randomly change its value
+    int newVal = cells[i].val;
+    bool climb = true;
+    int flopped = 0;
+    int value_old = p.GetValue();
+    int increment = 1;
+    
+    while(flopped < 2 && (newVal > minVal && newVal < maxVal)){
+        
+        newVal += increment;
+        
+        // baby steps
+        if(climb && newVal < maxVal)
+            p.SetCellValue(i, newVal);
+        else if(!climb && newVal > minVal)
+            p.SetCellValue(i, newVal);
+        
+        // check for increase
+        int value_new = p.GetValue();
+        
+        if (value_old > value_new){
+            increment *= -1;
+            flopped++;
+            climb = !climb;
+            newVal += increment;
+            p.SetCellValue(i, newVal);
+        }
+        else
+            value_old = value_new;
+    }
+    return p;
+}
+
 void Puzzle::GetAllSuccessors(std::vector<Puzzle> & successors)
 {
 	successors.clear();

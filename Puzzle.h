@@ -30,10 +30,9 @@ public:
 	
 	int GetValue();
 	bool HasSolution();
-	
-	Puzzle GetRandomSuccessor();
+    Puzzle GetRandomSuccessor();
+    Puzzle GetClimbingSuccessor();
 	void GetAllSuccessors(std::vector<Puzzle> & successors);
-	
 	void Print(bool printStatistics = true);
 
 private:
@@ -52,7 +51,7 @@ private:
 	int nRows, nColumns, minVal, maxVal, pSize;
 	
 	bool hasSolution, hasUniqueSolution;
-	bool evaluated;
+    bool evaluated;
 	int solutionLength, nWhiteHoles, nBlackHoles, nForcedForwardMoves, nForcedBackwardMoves, nReachableCells, nReachingCells;
 	int value;
 };
