@@ -41,6 +41,7 @@ Puzzle Puzzle::GetRandomSuccessor()
     
     p.SetCellValue(i, newVal);
     
+    
     return p;
 }
 
@@ -66,6 +67,7 @@ Puzzle Puzzle::GetClimbingSuccessor(std::vector<Puzzle> successors, int bestvalu
     return nextpuzzle;
 }
 
+//void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors)
 void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors)
 {
     successors.clear();
@@ -74,16 +76,24 @@ void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors)
     // Want to produce only 20*5 (random) successor puzzles to speed things up.
     int randos = 20;
         
+//    for (int i = 0; i < randos; i++)    // Do not modify the goal!
+//    {
+//        for (int v = minVal; v <= maxVal; v++)
+//        {
+//            int j = rand()%(pSize-1);
+//            if (cells[j].val != v)
+//            {
+//                successors.push_back(Puzzle(*this));
+//                successors.back().SetCellValue(j, v);
+//            }
+//        }
+//    }
     for (int i = 0; i < randos; i++)    // Do not modify the goal!
     {
         for (int v = minVal; v <= maxVal; v++)
         {
-            int j = rand()%(pSize-1);
-            if (cells[j].val != v)
-            {
-                successors.push_back(Puzzle(*this));
-                successors.back().SetCellValue(j, v);
-            }
+            Puzzle p = GetRandomSuccessor();
+            successors.push_back(p);
         }
     }
 }

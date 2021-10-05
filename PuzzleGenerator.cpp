@@ -87,6 +87,9 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
         else
         {
             p = p.GetRandomSuccessor();
+            while(!ProbabilityGenerator(bestValue,p.GetValue())){
+                p = p.GetRandomSuccessor();
+            }
             count = 0;
             p.GetSomeSuccessors(successors);
         }
@@ -98,7 +101,7 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
         {
             bestValue = value;    // Calling it a second time simply returns the value that was computed before.
             bestPuzzle = p;
-            bestPuzzle.GetSomeSuccessors(successors);
+            //bestPuzzle.GetSomeSuccessors(successors);
             count = 0;
         } else if(value == bestValue)
             count++;
@@ -108,12 +111,14 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
 }
 bool PuzzleGenerator::ProbabilityGenerator(int bestvalue, int potential)
 {
+    int numerator = (nRows * nColumns * 4);// + bestvalue;
+    std::cout << "called" << std::endl;
     int delta = potential - bestvalue;
     if(delta >= 0)
         return pCoinFlip(1.0);
-    int denom = 100 - bestvalue;
+    int denom = (bestvalue % numerator) + (bestvalue / numerator);
     double Tau = exp(delta/denom);
-//        std::cout << "delta: " << delta << ", bestvalue: " << bestvalue << ", potential: " << potential << ", denom: " << denom << ", Tau: " << Tau << std::endl;
+        std::cout << "delta: " << delta << ", bestvalue: " << bestvalue << ", potential: " << potential << ", denom: " << denom << ", Tau: " << Tau << std::endl;
         return pCoinFlip(Tau);
 }
 bool PuzzleGenerator::pCoinFlip(double probability)
@@ -127,41 +132,3 @@ bool PuzzleGenerator::pCoinFlip(double probability)
     return false;
 }
 
-
-// e^(-5/infinity) = 1
-
-// e^(-5/30)
-
-// e^(-5/1)
-
-
-
-
-/*
- bool PuzzleGenerator::ProbabilityGenerator(int bestvalue, int potential)
- {
-     int delta = potential - bestvalue;
-     
- //    if(delta <= 0)
- //        return pCoinFlip(1.0);
- //        double Tau;
- //            if(bestvalue != 0)
- //                Tau = exp(delta/(100.0/bestvalue));
- //            else
- //                Tau = 100;
- //        std::cout << "delta: " << delta << ", bestvalue: " << bestvalue << ", potential: " << potential << ", Tau: " << Tau << std::endl;
- //        return pCoinFlip(Tau);
-     if(delta >= 0)
-         return pCoinFlip(1.0);
-     int denom;
-     if(bestvalue < 0)
-         denom = 1000000;
-     else denom = 100-bestvalue;
-     double Tau = exp(delta/denom);
- //            if(bestvalue != 0)
- //            else
- //                Tau = 100;
- //        std::cout << "delta: " << delta << ", bestvalue: " << bestvalue << ", potential: " << potential << ", denom: " << denom << ", Tau: " << Tau << std::endl;
-         return pCoinFlip(Tau);
- }
- */
