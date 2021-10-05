@@ -10,6 +10,8 @@ public:
 	Puzzle GeneratePuzzle(); 
 	Puzzle RandomWalk(double timelimit);	// Time limit given in seconds.
     Puzzle hillClimb(double timelimit);
+    bool ProbabilityGenerator(int bestvalue, int potential);
+    bool pCoinFlip(double probability);
 	
 private:
 	int nRows, nColumns, minVal, maxVal;
