@@ -82,7 +82,7 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
         // (since we are doing a random walk, we just replace p with its successor)
         if(count < 10){
             p = p.GetClimbingSuccessor(successors, bestValue);
-            p.GetSomeSuccessors(successors);
+            p.GetSomeSuccessors(successors, nRows*nColumns);
         }
         else
         {
@@ -91,7 +91,7 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
                 p = p.GetRandomSuccessor();
             }
             count = 0;
-            p.GetSomeSuccessors(successors);
+            p.GetSomeSuccessors(successors, nRows*nColumns);
         }
         int value = p.GetValue();
         
@@ -101,7 +101,6 @@ Puzzle PuzzleGenerator::hillClimb(double timelimit)
         {
             bestValue = value;    // Calling it a second time simply returns the value that was computed before.
             bestPuzzle = p;
-            //bestPuzzle.GetSomeSuccessors(successors);
             count = 0;
         } else if(value == bestValue)
             count++;

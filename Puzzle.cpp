@@ -53,41 +53,32 @@ Puzzle Puzzle::GetClimbingSuccessor(std::vector<Puzzle> successors, int bestvalu
         return p;
         
     // Pick a random successor puzzle that has unique solution
-    int i = rand()%(successors.size()-1);
+//    int i = rand()%(successors.size()-1);
+    int i = 0;
     Puzzle nextpuzzle = successors.at(i);
-    int count = 0;
     while(nextpuzzle.GetValue() < bestvalue){
-        i = rand()%(successors.size()-1);
+//        i = rand()%(successors.size()-1);
         nextpuzzle = successors.at(i);
-        count++;
-        if (count > 20)
+//        count++;
+        if (i > 20)
             return GetRandomSuccessor();
+        i++;
     }
         
     return nextpuzzle;
 }
 
 //void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors)
-void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors)
+void Puzzle::GetSomeSuccessors(std::vector<Puzzle> & successors, int size)
 {
     successors.clear();
     Puzzle p(*this);
     
     // Want to produce only 20*5 (random) successor puzzles to speed things up.
-    int randos = 20;
+    int randos;
+    if(size < 50) randos = 20;
+    else randos = 10;
         
-//    for (int i = 0; i < randos; i++)    // Do not modify the goal!
-//    {
-//        for (int v = minVal; v <= maxVal; v++)
-//        {
-//            int j = rand()%(pSize-1);
-//            if (cells[j].val != v)
-//            {
-//                successors.push_back(Puzzle(*this));
-//                successors.back().SetCellValue(j, v);
-//            }
-//        }
-//    }
     for (int i = 0; i < randos; i++)    // Do not modify the goal!
     {
         for (int v = minVal; v <= maxVal; v++)
